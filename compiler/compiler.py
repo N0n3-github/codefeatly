@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+
 import threading
 import subprocess
 from platform import system
@@ -68,7 +72,7 @@ def return_output(lang, path, input_expr):
         # do something with errors
     return output
 
-# delete .exe file after json response
+# delete compiled files after json response
 
 
 if __name__ == '__main__':
