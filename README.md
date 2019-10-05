@@ -1,7 +1,5 @@
 # unamira
 
-# IT Exam
-
 ## About project
 This project is created for holding programming contests just as on codeforces.com.  
 
