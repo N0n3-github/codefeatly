@@ -84,4 +84,4 @@ if __name__ == '__main__':
             print(return_output('c++', r'codes\main.cpp', prog_input[i]))
         elif system() == 'Linux':
             print(return_output('python3', r'codes/for_testing.py', prog_input[i]))
-            print(return_output('c++', r'codes/main.cpp', prog_input[i]))
+            print(return_output('g++', r'codes/main.cpp', prog_input[i]))
