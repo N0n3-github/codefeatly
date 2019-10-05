@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 import threading
 import subprocess
 from platform import system
@@ -71,12 +68,16 @@ def return_output(lang, path, input_expr):
         # do something with errors
     return output
 
-# delete compiled files after json response
+# delete .exe file after json response
 
 
 if __name__ == '__main__':
     prog_input = ['1 2', '1 3', '5 4', '3 2', '1 2', '1 3', '5 4', '3 2', '1 2', '1 3', '5 4', '3 2']
     expecting_output = ['3', '4', '9', '5', '3', '4', '9', '5', '3', '4', '9', '5']
     for i in range(len(prog_input)):
-        print(return_output('python3', r'codes\for_testing.py', prog_input[i]))
-        print(return_output('c++', r'codes\main.cpp', prog_input[i]))
+        if system() == 'Windows':
+            print(return_output('python3', r'codes\for_testing.py', prog_input[i]))
+            print(return_output('c++', r'codes\main.cpp', prog_input[i]))
+        elif system() == 'Linux':
+            print(return_output('python3', r'codes/for_testing.py', prog_input[i]))
+            print(return_output('c++', r'codes/main.cpp', prog_input[i]))
