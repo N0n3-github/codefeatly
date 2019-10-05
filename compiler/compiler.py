@@ -71,7 +71,7 @@ def return_output(lang, path, input_expr):
         # do something with errors
     return output
 
-# delete .exe file after json response
+# delete compiled file after json response
 
 
 if __name__ == '__main__':
