@@ -1,2 +1,2 @@
-﻿psutil
+psutil
 c++ compiler
