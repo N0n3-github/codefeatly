@@ -57,11 +57,9 @@ def return_output(lang, path, input_expr):
             subprocess.call(command, shell=True)
         lang = ''
         path = exec_file
-    command = None
-    if system() == 'Windows':
-        command = (lang + ' ' + path).split()
-    elif system() == 'Linux':
-        command = 'echo ' + input_expr + ' | ' + lang + ' ' + path
+    if system() == 'Linux':
+        path = './' + path
+    command = 'echo ' + input_expr + ' | ' + lang + ' ' + path
     with subprocess.Popen(command,
                           shell=True,
                           stdin=subprocess.PIPE,
@@ -78,10 +76,10 @@ def return_output(lang, path, input_expr):
 if __name__ == '__main__':
     prog_input = ['1 2', '1 3', '5 4', '3 2', '1 2', '1 3', '5 4', '3 2', '1 2', '1 3', '5 4', '3 2']
     expecting_output = ['3', '4', '9', '5', '3', '4', '9', '5', '3', '4', '9', '5']
+    paths = [r'codes\for_testing.py', r'codes\main.cpp']  # make only one path as sys.argv[2]
+    if system() == 'Linux':
+        for i in range(len(paths)):
+            paths[i] = paths[i].replace('\\', r'/')  # do this with only sys.argv[2] when add it
     for i in range(len(prog_input)):
-        if system() == 'Windows':
-            print(return_output('python3', r'codes\for_testing.py', prog_input[i]))
-            print(return_output('g++', r'codes\main.cpp', prog_input[i]))
-        elif system() == 'Linux':
-            print(return_output('python3', r'codes/for_testing.py', prog_input[i]))
-            print(return_output('g++', r'codes/main.cpp', prog_input[i]))
+        print(return_output('python3', paths[0], prog_input[i]))
+        print(return_output('g++', paths[1], prog_input[i]))
