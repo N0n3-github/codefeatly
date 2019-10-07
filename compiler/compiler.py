@@ -57,10 +57,9 @@ def return_output(lang, path, input_expr):
     command = 'echo ' + input_expr + ' | ' + lang + ' ' + path
     with subprocess.Popen(command,
                           shell=True,
-                          stdin=subprocess.PIPE,
                           stdout=subprocess.PIPE,
                           stderr=subprocess.PIPE) as process:
-        output, errors = [str(x.strip())[2:-1] for x in process.communicate(input=input_expr.encode())]
+        output, errors = [str(x.strip())[2:-1] for x in process.communicate()]
         process.terminate()
         # do something with errors
     return output
