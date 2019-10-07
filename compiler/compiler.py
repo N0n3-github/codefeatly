@@ -45,7 +45,7 @@ def process_threading_function(timeout=2):
 def return_output(lang, path, input_expr):
     if lang in ('c++', 'g++', 'gcc'):
         from os.path import exists as file_exsists
-        exec_file = path[:-4] + '.exe'
+        exec_file = path[:path.find('.')] + '.exe'
 
         if not file_exsists(exec_file):
             command = lang + ' ' + path + ' -o ' + exec_file
