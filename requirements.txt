@@ -2,4 +2,19 @@ Python libs:
 psutil
 
 Compilers:
-c++ compiler
+g++ compiler
+gcc compiler
+For Windows users: Just install CodeBlocks with mingw and add g++  and gcc to path variable
+
+nasm comiler 
+Linux: sudo apt-get install nasm
+
+java compiler
+Linux: sudo apt-get install default-jdk
+
+Others:
+For Linux users: mono-complete
+sudo apt-get install mono-complete
+
+linux-tools for Windows
+For Windows users: Git will be enough
