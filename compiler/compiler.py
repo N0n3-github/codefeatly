@@ -49,13 +49,13 @@ def return_output(lang, path, input_expr):
 
         if not file_exsists(exec_file):
             command = lang + ' ' + path + ' -o ' + exec_file
-            subprocess.call(command.split(), shell=True)
+            subprocess.call(command, shell=True)
         lang = ''
         path = exec_file
     if system() == 'Linux':
         path = './' + path
     command = 'echo ' + input_expr + ' | ' + lang + ' ' + path
-    with subprocess.Popen(command.split(), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as process:
+    with subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as process:
         output, errors = [str(x.strip())[2:-1] for x in process.communicate()]
         process.terminate()
         # do something with errors
