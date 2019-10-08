@@ -84,7 +84,8 @@ def return_output(lang, path, input_expr):
                 output = path[:-4] + '.o'
                 subprocess.call(compile_commands[lang].format(output, arc, path), shell=True)
                 compiled_fname = output[:-2] + '.exe'
-                subprocess.call('ld -m elf_i386 -o {} {}'.format(compiled_fname, output), shell=True)
+                link_arc = 'elf_i386' if system() != 'Windows' else 'i386pe'
+                subprocess.call('ld -m ' + link_arc + ' -o {} {}'.format(compiled_fname, output), shell=True)
 
         if lang != 'java':
             path = path[:path.find('.')] + output_extenstions[lang]
