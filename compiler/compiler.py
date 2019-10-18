@@ -3,21 +3,12 @@
 
 import threading
 import subprocess
-from platform import system
 import os
-
+from psutil import process_iter as get_all_processes
+from signal import SIGTERM
+from platform import system
 
 def process_threading_function(timeout=2):
-    """
-    This function wraps a function that calls a process in a thread.
-    You should give a process name as the first argument of your function.
-    It can be useful if you want to run your processes parallel.
-    Also there is a timeout argument if you want to kill your process after some period of time.
-    """
-    from psutil import process_iter as get_all_processes
-    from os import kill, getpid as main_pid
-    from signal import SIGTERM
-
     def outer(func):
         def wrapper(*args, **kwargs):
             def get_processes(name):
@@ -35,8 +26,8 @@ def process_threading_function(timeout=2):
             thread.alive_pids = [process.pid for process in get_processes(args[0])]
             if thread.is_alive():
                 for pid in thread.alive_pids:
-                    if pid != main_pid():
-                        kill(pid, SIGTERM)
+                    if pid != os.getpid():
+                        os.kill(pid, SIGTERM)
             return thread.result
         return wrapper
     return outer
@@ -44,29 +35,24 @@ def process_threading_function(timeout=2):
 
 @process_threading_function()
 def return_output(lang, path, input_expr):
+    os_spliter = '/' if system() != 'Windows' else '\\'
     interpreting_langs = 'python, python3, python2, php'
     compiling_langs = 'pascalabc.net', 'c++11', 'c++14', 'gcc', 'nasm', 'java'
     if lang not in interpreting_langs and lang not in compiling_langs:
         return
     compile_commands = {
-        'pascalabc.net': '../pascal/pabcnetc.exe {}',
         'c++11': 'g++ -std=c++11 -o {} {}',
         'c++14': 'g++ -std=c++14 -o {} {}',
         'gcc': 'gcc -o {} {}',
-        'nasm': 'nasm -o {} -f {} {}',
         'java': 'javac {}',
-    }
-    output_extenstions = {
-        'pascalabc.net': '.exe',
-        'c++11': '.exe',
-        'c++14': '.exe',
-        'gcc': '.exe',
-        'nasm': '.exe',
-        'java': '.class',
+        'pascalabc.net': '..{0}pascal{0}pabcnetc.exe'.format(os_spliter) + ' {}',
+        'nasm': 'nasm -o {} -f {} {}',
     }
 
     if lang in compiling_langs:
-        exec_file = path[:path.find('.')] + output_extenstions[lang]
+        exec_file = path[:path.find('.')]
+        exec_file += '.class' if lang == 'java' else '.exe'
+        # if execution file does not exist then compile
         if not os.path.exists(exec_file):
             if lang in ('c++11', 'c++14', 'gcc'):
                 subprocess.call(compile_commands[lang].format(exec_file, path), shell=True)
@@ -75,35 +61,33 @@ def return_output(lang, path, input_expr):
             elif lang == 'pascalabc.net':
                 os.chdir('codes')
                 mono_tool = 'mono' if system() != 'Windows' else ''
-                split = '/' if system() != 'Windows' else '\\'
-                compile_command = mono_tool + ' ' + compile_commands[lang].format(path[path.find(split) + 1:])
+                compile_command = mono_tool + ' ' + compile_commands[lang].format(path[path.find(os_spliter) + 1:])
                 subprocess.call(compile_command, stdout=subprocess.PIPE, shell=True)
-                os.chdir('../')
+                os.chdir('..')
             elif lang == 'nasm':
-                arc = 'elf32' if system() != 'Windows' else 'win32'
-                output = path[:-4] + '.o'
-                subprocess.call(compile_commands[lang].format(output, arc, path), shell=True)
-                compiled_fname = output[:-2] + '.exe'
-                link_arc = 'elf_i386' if system() != 'Windows' else 'i386pe'
-                subprocess.call('ld -m ' + link_arc + ' -o {} {}'.format(compiled_fname, output), shell=True)
-
-        if lang != 'java':
-            path = path[:path.find('.')] + output_extenstions[lang]
-            lang = ''
+                if system() != 'Windows':
+                    output = path[:-4] + '.o'
+                    subprocess.call(compile_commands[lang].format(output, arc, path), shell=True)
+                    # compile under both architectures to get output
+                    subprocess.call('ld -m elf32 -o {} {}'.format(mode, exec_file, output), shell=True)
+                    subprocess.call('ld -m elf64 -o {} {}'.format(mode, exec_file, output), shell=True)
+        
+        # As java is running through "java" command we don't get any executable, so added some lines of code
+        if lang == 'java':
+            path = path[path.find(os_spliter) + 1:path.find('.')]
+            os.chdir('codes')
         else:
-            split = '/' if system() != 'Windows' else '\\'
-            path = path[path.find(split) + 1:path.find('.')]
+            path = path[:path.find('.')] + '.exe'
+            lang = ''
 
     if system() != 'Windows' and lang != 'java':
         path = './' + path
-    if lang == 'java':
-        os.chdir('codes')
     command = 'echo ' + input_expr + ' | ' + lang + ' ' + path
     with subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as process:
         output, errors = [str(x.strip())[2:-1] for x in process.communicate()]
         process.terminate()
-        if lang == 'java':
-            os.chdir('..')
+    if lang == 'java':
+        os.chdir('..')
         # do something with errors
     return output
 
