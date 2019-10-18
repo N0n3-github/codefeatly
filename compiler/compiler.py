@@ -8,6 +8,7 @@ from psutil import process_iter as get_all_processes
 from signal import SIGTERM
 from platform import system
 
+
 def process_threading_function(timeout=2):
     def outer(func):
         def wrapper(*args, **kwargs):
@@ -33,9 +34,8 @@ def process_threading_function(timeout=2):
     return outer
 
 
-@process_threading_function()
+@process_threading_function(3)
 def return_output(lang, path, input_expr):
-    os_spliter = '/' if system() != 'Windows' else '\\'
     interpreting_langs = 'python, python3, python2, php'
     compiling_langs = 'pascalabc.net', 'c++11', 'c++14', 'gcc', 'nasm', 'java'
     if lang not in interpreting_langs and lang not in compiling_langs:
@@ -45,7 +45,7 @@ def return_output(lang, path, input_expr):
         'c++14': 'g++ -std=c++14 -o {} {}',
         'gcc': 'gcc -o {} {}',
         'java': 'javac {}',
-        'pascalabc.net': '..{0}pascal{0}pabcnetc.exe'.format(os_spliter) + ' {}',
+        'pascalabc.net': '..{0}pascal{0}pabcnetc.exe'.format(os.sep) + ' {}',
         'nasm': 'nasm -o {} -f {} {}',
     }
 
@@ -61,20 +61,24 @@ def return_output(lang, path, input_expr):
             elif lang == 'pascalabc.net':
                 os.chdir('codes')
                 mono_tool = 'mono' if system() != 'Windows' else ''
-                compile_command = mono_tool + ' ' + compile_commands[lang].format(path[path.find(os_spliter) + 1:])
+                compile_command = mono_tool + ' ' + compile_commands[lang].format(path[path.find(os.sep) + 1:])
                 subprocess.call(compile_command, stdout=subprocess.PIPE, shell=True)
                 os.chdir('..')
             elif lang == 'nasm':
                 if system() != 'Windows':
                     output = path[:-4] + '.o'
-                    subprocess.call(compile_commands[lang].format(output, arc, path), shell=True)
-                    # compile under both architectures to get output
-                    subprocess.call('ld -m elf32 -o {} {}'.format(mode, exec_file, output), shell=True)
-                    subprocess.call('ld -m elf64 -o {} {}'.format(mode, exec_file, output), shell=True)
-        
+                    devnull = open(os.devnull, 'w')
+                    # 32 arc
+                    subprocess.call(compile_commands[lang].format(output, 'elf32', path), shell=True, stderr=devnull)
+                    subprocess.call('ld -m elf_i386 -o {} {}'.format(exec_file, output), shell=True, stderr=devnull)
+                    if not os.path.exists(exec_file):
+                        # 64 arc
+                        subprocess.call(compile_commands[lang].format(output, 'elf64', path), shell=True, stderr=devnull)
+                        subprocess.call('ld -o {} {}'.format(exec_file, output), shell=True, stderr=devnull)
+                    
         # As java is running through "java" command we don't get any executable, so added some lines of code
         if lang == 'java':
-            path = path[path.find(os_spliter) + 1:path.find('.')]
+            path = path[path.find(os.sep) + 1:path.find('.')]
             os.chdir('codes')
         else:
             path = path[:path.find('.')] + '.exe'
@@ -91,7 +95,12 @@ def return_output(lang, path, input_expr):
         # do something with errors
     return output
 
-# delete compiled files after json response
+
+def delete_compiled_files():
+    output = os.listdir('codes')
+    for fname in output:
+        if fname[-fname[::-1].find('.') - 1:] not in ('.asm', '.c', '.cpp', '.java', '.pas', '.py'):
+            os.remove('codes{}'.format(os.sep + fname))
 
 
 if __name__ == '__main__':
@@ -114,3 +123,4 @@ if __name__ == '__main__':
         print('PascalABC.NET:', return_output('pascalabc.net', paths[3], prog_input[i]))
         print('NASM:', return_output('nasm', paths[4], prog_input[i]))
         print()
+    delete_compiled_files()
