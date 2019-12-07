@@ -17,5 +17,5 @@ It is better if encode type will be in "utf8mb4_unicode_520_ci". If you put "utf
 
 ## Adminpanel
 ### Notice
-Default token for registrating an admin is 'dW5hbWlyYQ==' (the word "unamira" encoded in Base64).  
+Default token for registrating an admin is "Y29kZWZlYXRseQ==" (the word "codefeatly" encoded in Base64).  
 If you want to change it then go to "adminpanel/registration.php" and change the checking token on line 16 to that you want.  
