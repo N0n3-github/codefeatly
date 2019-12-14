@@ -105,7 +105,7 @@ def return_output(lang, path, input_expr):
 def delete_compiled_files():
     output = os.listdir('codes')
     for fname in output:
-        if fname[-fname[::-1].find('.') - 1:] not in ('.asm', '.c', '.cpp', '.java', '.pas', '.py'):
+        if fname[-fname[::-1].find('.') - 1:] not in ('.asm', '.c', '.cpp', '.java', '.pas', '.py', '.php'):
             os.remove('codes{}'.format(os.sep + fname))
 
 
