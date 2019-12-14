@@ -63,7 +63,8 @@ def compile_file(lang, path, outputpath):  # Refactor this
         os.chdir('codes')
         mono_tool = 'mono' if system() != 'Windows' else ''
         compile_command = mono_tool + ' ' + compile_commands[lang].format(path[path.find(os.sep) + 1:])
-        subprocess.call(compile_command, stdout=subprocess.PIPE, shell=True)
+        devnull = open(os.devnull, 'w')
+        subprocess.call(compile_command, shell=True, stdout=devnull)
         os.chdir('..')
     elif lang == 'nasm':  # fix and clarify NASM support
         if system() != 'Windows':
@@ -129,8 +130,8 @@ if __name__ == '__main__':
         'pascalabc.net': '.exe',
         'nasm': '.exe',
     }
-    sys_argv_path = paths[1].replace('/', os.sep).replace('\\', os.sep)  # write sys.argv[2] instead pf paths[2] instead
-    sys_argv_lang = 'c++14'  # write sys.argv[<index of language>] here instead
+    sys_argv_path = paths[2].replace('/', os.sep).replace('\\', os.sep)  # write sys.argv[2] instead pf paths[2] instead
+    sys_argv_lang = 'java'  # write sys.argv[<index of language>] here instead
     # COMPILE FILE
     if sys_argv_lang in compiling_langs:
         opt_path = sys_argv_path[:-sys_argv_path[::-1].find('.') - 1] + compile_extensions[sys_argv_lang]
@@ -141,9 +142,11 @@ if __name__ == '__main__':
             sys_argv_path = opt_path
     # COMPILE FILE
 
-    # TODO: refactor compile function, All exit types as (CE; RE; TLE; ME; WA; OK;) and make json response, sys.argv
-    # TODO: Java non-outputs, NASM support, MySQL bind
+    # TODO: refactor compile function
+    # TODO: All exit types as (CE; RE; TLE; ME; WA; OK;) and make json response, sys.argv
+    # TODO: NASM support, MySQL bind
+    # TODO: Do something with errors
     # TODO: Test that all
     for i in range(len(prog_input)):
-        print(sys_argv_lang.upper()+': ', return_output(sys_argv_lang, sys_argv_path, prog_input[i]))
+        print(sys_argv_lang.upper()+':', return_output(sys_argv_lang, sys_argv_path, prog_input[i]))
     delete_compiled_files()
