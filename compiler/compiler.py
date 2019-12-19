@@ -33,7 +33,7 @@ def process_threading_function(timeout=1):
     return outer
 
 
-def compile_file(lang, path, outputpath):  # Refactor this
+def compile_file(lang, path, outputpath):
     from shutil import copyfile, SameFileError as shutil_SameFileError
     from time import sleep as wait_for_compilng
     compile_commands = {
@@ -42,23 +42,23 @@ def compile_file(lang, path, outputpath):  # Refactor this
         'gcc': 'gcc -o {} {}',
         'java': 'javac {}',
         'pascalabc.net': '..{0}pascal{0}pabcnetc.exe'.format(os.sep) + ' {}',
-        'nasm': 'nasm -o {} -f {} {}',
+        'nasm': 'nasm -f elf -o {} {}',
     }
     if lang in ('c++11', 'c++14', 'gcc'):
         subprocess.call(compile_commands[lang].format(outputpath, path), shell=True)
     elif lang == 'java':
         try:
-            with open(path, 'r') as file:
+            with open(path, 'r') as file:  # reading public_class name of file
                 public_class_name = re.findall(r'public class .*', file.read())[0][13:]
         except IndexError:
-            public_class_name = 'Error_public_name:::none'
-        try:
+            public_class_name = 'Error_public_name:::none'  # if we couldn't get public_class_name
+        try:  # trying to copy this file for the case if file names not as public_class name
             copyfile(path, 'codes'+os.sep+public_class_name+'.java')
         except shutil_SameFileError:
-            pass
+            pass  # if file with that public_class name already exists ignore it
         subprocess.call(compile_commands[lang].format('codes'+os.sep+public_class_name+'.java'), shell=True)
         if 'codes'+os.sep+public_class_name+'.java' != path:
-            os.remove('codes'+os.sep+public_class_name+'.java')
+            os.remove('codes'+os.sep+public_class_name+'.java')  # if we copied any file delete the copy
     elif lang == 'pascalabc.net':
         os.chdir('codes')
         mono_tool = 'mono' if system() != 'Windows' else ''
@@ -66,18 +66,11 @@ def compile_file(lang, path, outputpath):  # Refactor this
         devnull = open(os.devnull, 'w')
         subprocess.call(compile_command, shell=True, stdout=devnull)
         os.chdir('..')
-    elif lang == 'nasm':  # fix and clarify NASM support
+    elif lang == 'nasm':
         if system() != 'Windows':
             output = path[:-4] + '.o'
-            devnull = open(os.devnull, 'w')
-            # 32 arc
-            subprocess.call(compile_commands[lang].format(output, 'elf32', path), shell=True, stderr=devnull)
-            subprocess.call('ld -m elf_i386 -o {} {}'.format(outputpath, output), shell=True, stderr=devnull)
-            if not os.path.exists(outputpath):
-                # 64 arc
-                subprocess.call(compile_commands[lang].format(output, 'elf64', path), shell=True,
-                                stderr=devnull)
-                subprocess.call('ld -o {} {}'.format(outputpath, output), shell=True, stderr=devnull)
+            subprocess.call(compile_commands[lang].format(output, 'elf', path), shell=True)
+            subprocess.call('ld -m elf_i386 -o {} {}'.format(outputpath, output), shell=True)
     wait_for_compilng(2.5)
 
 
@@ -142,9 +135,8 @@ if __name__ == '__main__':
             sys_argv_path = opt_path
     # COMPILE FILE
 
-    # TODO: refactor compile function
     # TODO: All exit types as (CE; RE; TLE; ME; WA; OK;) and make json response, sys.argv
-    # TODO: NASM support, MySQL bind
+    # TODO: MySQL bind
     # TODO: Do something with errors
     # TODO: Test that all
     for i in range(len(prog_input)):
