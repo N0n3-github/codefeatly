@@ -90,7 +90,7 @@ def return_output(lang, path, input_expr):
     }
     command = 'echo ' + input_expr + ' | ' + run_commands[lang].format(path)
     with subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as process:
-        output, errors = [str(x.strip())[2:-1] for x in process.communicate()]
+        output, errors = [x.decode() for x in process.communicate()]
         process.terminate()
     return output
 
