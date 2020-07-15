@@ -1,5 +1,6 @@
 Python libs:
 psutil
+Django==2.2.6
 
 Compilers:
 g++ compiler
