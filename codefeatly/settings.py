@@ -25,7 +25,7 @@ SECRET_KEY = 'aq((!h%7-i7=!s=&$*tnjzt5ptzt*_@96vsiebnsy*yfcssbdk'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['codefeatly.com']
+ALLOWED_HOSTS = ['codefeatly.com', 'localhost']
 
 
 # Application definition

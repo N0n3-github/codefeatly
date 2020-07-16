@@ -4,3 +4,69 @@ body, .container-fluid {
     background: #131619;
     min-height: 100vh;
 }
+
+.container-fluid {
+    align-items: center;
+}
+
+h1 {
+    font-size: 43px;
+}
+
+.title {
+    margin: 0 0 20px 0;
+    letter-spacing: 3px;
+    color: #27292ce6;
+}
+
+@media only screen and (max-width: 600px) {
+    h1 {
+        font-size: 33px;
+    }
+}
+
+.green {
+    color: #4dbd00;
+}
+
+.transparent {
+    color: transparent;
+}
+
+.login-container {
+    padding: 20px;
+	background-color: #5556574f;
+	border-radius: 20px;
+	flex-grow: 0.25;
+}
+
+.input {
+    background-color: #131619;
+    border: none;
+    height: 55px;
+    margin: 0 0 25px 0;
+    font-size: 20px;
+    color: rgba(77, 189, 0, 0.7);
+    letter-spacing: 0.7px;
+}
+
+.input:focus {
+    background-color: #131619;
+    box-shadow: 0 0 0 .2rem rgba(77, 189, 0, 0.44);
+    cursor: unset;
+}
+
+.btn-login {
+    margin: 15px 0 0 0;
+    height: 50px;
+    background-color: transparent;
+    font-weight: bold;
+    color: #ffffff;
+    border: 3px solid #5556574f;
+    transition: 0.6s ease;
+    border-radius: 10px;
+}
+
+.btn-login:hover {
+    box-shadow: inset 35em 0 0 0 rgba(77, 189, 0, 0.7);
+}
