@@ -5,11 +5,33 @@
         <meta charset="UTF-8">
         {% load static %}
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap_select/bootstrap-select.css' %}">
         <link rel="stylesheet" href="{% static 'main/signup.css' %}">
-        <script src="{% static 'js/jquery-3.4.1.js' %}"></script>
+        <script src="{% static 'jquery/jquery-3.4.1.js' %}"></script>
+        <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'bootstrap_select/bootstrap-select.js' %}"></script>
         <title>Codefeatly</title>
     </head>
     <body>
-
+        <div class="container-fluid d-flex flex-column justify-content-center">
+            <h1 class="title green">
+                Create your new account
+            </h1>
+            <div class="signup-container d-flex flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10">
+                <input class="form-control input" placeholder="Username" required>
+                <input class="form-control input" placeholder="E-mail" required>
+                <select class="form-control selectpicker show-tick" required title="Choose your rank :)">
+                    <option>Lamer</option>
+                    <option>Noob</option>
+                    <option>Coder</option>
+                    <option>Programmer</option>
+                    <option>Hacker</option>
+                    <option>I hacked NASA with HTML</option>
+                </select>
+                <input type="password" class="form-control input" placeholder="Password" required>
+                <input type="password" class="form-control input" placeholder="Confirm password" required>
+                <button class="form-control btn-signup">Sign up a new account</button>
+            </div>
+        </div>
     </body>
 </html>

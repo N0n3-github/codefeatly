@@ -6,7 +6,8 @@
         {% load static %}
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'main/style.css' %}">
-        <script src="{% static 'js/jquery-3.4.1.js' %}"></script>
+        <script src="{% static 'jquery/jquery-3.4.1.js' %}"></script>
+        <script src="{% static 'fontawesome/fontawesome_all.js' %}"></script>
         <title>Codefeatly</title>
     </head>
     <body>
@@ -14,20 +15,58 @@
             <h1 class="title">
                 root@<font class="green">codefeatly</font>:[/]# <font class="cursor green">█</font>
             </h1>
-            <div class="login-container d-flex flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-9">
+            <div class="login-container d-flex flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10">
                 <input class="form-control input" placeholder="Username">
-                <input type="password" class="form-control input" placeholder="Password">
+                <div class="input-group">
+                    <input id="passwd_input" type="password" class="form-control input" placeholder="Password">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default show_hide_pwd_btn">
+                            <i class="fas fa-eye-slash"></i>
+                        </button>
+                    </span>
+                </div>
                 <button class="form-control btn-login">Log in</button>
+                <p class="signup-text">Don't have account yet? <a href="signup">Sign up</a></p>
+            </div>
+            <div class="quote_container col-xl-5 col-lg-6 col-md-7 col-sm-9 col-9">
+                <p class="quote"></p>
             </div>
         </div>
         <script type="text/javascript">
             $(document).ready(function() {
+                var quotes = [
+                    '“First, solve the problem. Then, write the code.” – John Johnson',
+                    '“Experience is the name everyone gives to their mistakes.” – Oscar Wilde',
+                    '“In order to be irreplaceable, one must always be different” – Coco Chanel',
+                    '“Java is to JavaScript what car is to Carpet.” – Chris Heilmann',
+                    '“Knowledge is power.” – Francis Bacon',
+                    '“Code is like humor. When you have to explain it, it’s bad.” – Cory House',
+                    '“Fix the cause, not the symptom.” – Steve Maguire',
+                    '“Simplicity is the soul of efficiency.” – Austin Freeman',
+                    '“Before software can be reusable it first has to be usable.” – Ralph Johnson',
+                    '“Make it work, make it right, make it fast.” – Kent Beck',
+                    '“Talk is cheap. Show me the code.” - Linus Torvalds',
+                    '“Truth can only be found in one place: the code.” ― Robert C. Martin',
+                    '“Deleted code is debugged code.” ― Jeff Sickel',
+                    '“It’s harder to read code than to write it.” — Joel Spolsky',
+                ]
+                $('.quote').html((quotes[Math.floor(Math.random() * quotes.length)]));
                 setInterval(function() {
                     if ($('.cursor').hasClass('transparent'))
                         $('.cursor').removeClass('transparent');
                     else
                         $('.cursor').addClass('transparent');
                 }, 600);
+                $('.show_hide_pwd_btn').click(function() {
+                    if ($('#passwd_input').attr('type') == 'password') {
+                        $('#passwd_input').attr('type', 'text');
+                        $('.fa-eye-slash').removeClass('fa-eye-slash').addClass('fa-eye');
+                    }
+                    else {
+                        $('#passwd_input').attr('type', 'password');
+                        $('.fa-eye').removeClass('fa-eye').addClass('fa-eye-slash');
+                    }
+                });
             });
         </script>
     </body>
