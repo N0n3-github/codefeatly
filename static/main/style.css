@@ -19,9 +19,9 @@ h1 {
     color: #27292ce6;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 700px) {
     h1 {
-        font-size: 33px;
+        font-size: 35px;
     }
 }
 
@@ -37,14 +37,16 @@ h1 {
     padding: 20px;
 	background-color: #5556574f;
 	border-radius: 20px;
+	align-items: center;
 	flex-grow: 0.25;
 }
 
 .input {
     background-color: #131619;
     border: none;
+    border-radius: 7px!important;
     height: 55px;
-    margin: 0 0 25px 0;
+    margin: 0 0 25px 0!important;
     font-size: 20px;
     color: rgba(77, 189, 0, 0.7);
     letter-spacing: 0.7px;
@@ -56,17 +58,65 @@ h1 {
     cursor: unset;
 }
 
+.show_hide_pwd_btn {
+    position: absolute;
+    padding: 0;
+    right: 0;
+    width: 55px;
+    height: 55px;
+    color: #4dbd00;
+    border: none;
+    background-color: #131619;
+    border-radius: 0 7px 7px 0;
+    z-index: 3;
+}
+
+.show_hide_pwd_btn:hover {
+    color: #4dbd00;
+}
+
+.show_hide_pwd_btn:focus {
+    box-shadow: none;
+}
+
 .btn-login {
+    width: 90%;
     margin: 15px 0 0 0;
     height: 50px;
     background-color: transparent;
+    font-size: 20px;
     font-weight: bold;
     color: #ffffff;
     border: 3px solid #5556574f;
-    transition: 0.6s ease;
+    transition: 0.8s ease;
     border-radius: 10px;
 }
 
 .btn-login:hover {
-    box-shadow: inset 35em 0 0 0 rgba(77, 189, 0, 0.7);
+    width: 100%;
+    background-color: rgba(77, 189, 0, 0.7);
+}
+
+.signup-text {
+    position: absolute;
+    bottom: 5px;
+    font-size: 18px;
+    color: #ffffff;
+}
+
+a {
+    color: #4dbd00;
+}
+
+a:hover {
+    color: #4dbd00;
+}
+
+.quote_container {
+    position: absolute;
+    font-family: Times;
+    bottom: 10px;
+    font-size: 20px;
+    color: #4dbd00;
+    text-align: center;
 }
