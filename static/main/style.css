@@ -5,23 +5,37 @@ body, .container-fluid {
     min-height: 100vh;
 }
 
-.container-fluid {
+.container-fluid, .content {
     align-items: center;
 }
 
-h1 {
-    font-size: 43px;
+.content {
+    width: 100%;
+    flex: 1 0 auto;
 }
 
 .title {
+    font-size: 43px;
     margin: 0 0 20px 0;
     letter-spacing: 3px;
     color: #27292ce6;
 }
 
-@media only screen and (max-width: 700px) {
-    h1 {
-        font-size: 35px;
+@media only screen and (max-width: 960px) {
+    .title {
+        font-size: 37px;
+    }
+}
+
+@media only screen and (max-width: 720px) {
+    .title {
+        font-size: 30px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .title {
+        font-size: 27px;
     }
 }
 
@@ -34,6 +48,7 @@ h1 {
 }
 
 .login-container {
+    min-height: 370px;
     padding: 20px;
 	background-color: #5556574f;
 	border-radius: 20px;
@@ -92,9 +107,17 @@ h1 {
     border-radius: 10px;
 }
 
-.btn-login:hover {
+.btn-login:hover,
+.btn-login:focus {
     width: 100%;
     background-color: rgba(77, 189, 0, 0.7);
+    color: #ffffff;
+    border: 3px solid #5556574f;
+    box-shadow: none;
+}
+
+p {
+    margin: 10px 0;
 }
 
 .signup-text {
@@ -113,9 +136,9 @@ a:hover {
 }
 
 .quote_container {
-    position: absolute;
+    width: 100%;
+    padding: 0;
     font-family: Times;
-    bottom: 10px;
     font-size: 20px;
     color: #4dbd00;
     text-align: center;

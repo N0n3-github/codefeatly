@@ -12,23 +12,25 @@
     </head>
     <body>
         <div class="container-fluid d-flex flex-column justify-content-center">
-            <h1 class="title">
-                root@<font class="green">codefeatly</font>:[/]# <font class="cursor green">█</font>
-            </h1>
-            <div class="login-container d-flex flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10">
-                <input class="form-control input" placeholder="Username">
-                <div class="input-group">
-                    <input id="passwd_input" type="password" class="form-control input" placeholder="Password">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default show_hide_pwd_btn">
-                            <i class="fas fa-eye-slash"></i>
-                        </button>
-                    </span>
+            <div class="content d-flex flex-column justify-content-center">
+                <h1 class="title">
+                    root@<font class="green">codefeatly</font>:[/]# <font class="cursor green">█</font>
+                </h1>
+                <div class="login-container d-flex flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10">
+                    <input class="form-control input" placeholder="Username">
+                    <div class="input-group">
+                        <input id="passwd_input" type="password" class="form-control input" placeholder="Password">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default show_hide_pwd_btn">
+                                <i class="fas fa-eye-slash"></i>
+                            </button>
+                        </span>
+                    </div>
+                    <button class="form-control btn-login">Log in</button>
+                    <p class="signup-text">Don't have account yet? <a href="signup">Sign up</a></p>
                 </div>
-                <button class="form-control btn-login">Log in</button>
-                <p class="signup-text">Don't have account yet? <a href="signup">Sign up</a></p>
             </div>
-            <div class="quote_container col-xl-5 col-lg-6 col-md-7 col-sm-9 col-9">
+            <div class="quote_container d-flex justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-9">
                 <p class="quote"></p>
             </div>
         </div>
