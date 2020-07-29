@@ -16,10 +16,11 @@
                 <h1 class="title">
                     root@<font class="green">codefeatly</font>:[/]# <font class="cursor green">█</font>
                 </h1>
-                <div class="login-container d-flex flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10">
-                    <input class="form-control input" placeholder="Username">
+                <form class="login-container d-flex flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10" onsubmit="return false;">
+                    {% csrf_token %}
+                    <input id="username" class="form-control input" placeholder="Username">
                     <div class="input-group">
-                        <input id="passwd_input" type="password" class="form-control input" placeholder="Password">
+                        <input id="password" type="password" class="form-control input" placeholder="Password">
                         <span class="input-group-btn">
                             <button class="btn btn-default show_hide_pwd_btn">
                                 <i class="fas fa-eye-slash"></i>
@@ -28,7 +29,8 @@
                     </div>
                     <button class="form-control btn-login">Log in</button>
                     <p class="signup-text">Don't have account yet? <a href="signup">Sign up</a></p>
-                </div>
+                </form>
+                <div class="exception_box flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10"></div>
             </div>
             <div class="quote_container d-flex justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-9">
                 <p class="quote"></p>
@@ -60,14 +62,33 @@
                         $('.cursor').addClass('transparent');
                 }, 600);
                 $('.show_hide_pwd_btn').click(function() {
-                    if ($('#passwd_input').attr('type') == 'password') {
-                        $('#passwd_input').attr('type', 'text');
+                    if ($('#password').attr('type') == 'password') {
+                        $('#password').attr('type', 'text');
                         $('.fa-eye-slash').removeClass('fa-eye-slash').addClass('fa-eye');
                     }
                     else {
-                        $('#passwd_input').attr('type', 'password');
+                        $('#password').attr('type', 'password');
                         $('.fa-eye').removeClass('fa-eye').addClass('fa-eye-slash');
                     }
+                });
+                $('.btn-login').click(function() {
+                    $.ajax({
+                        type: "POST",
+                        url: '/',
+                        data: {
+                            'username': $('#username').val(),
+                            'password': $('#password').val(),
+                            'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),
+                        },
+                        success: function(response) {
+                         if (response['status'] == 'ok')
+                            window.location = '/tasks';
+                         else {
+                             $('.exception_box').html(response['exception']);
+                             $('.exception_box').addClass('d-flex');
+                         }
+                        }
+                    });
                 });
             });
         </script>

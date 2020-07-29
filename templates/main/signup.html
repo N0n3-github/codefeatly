@@ -17,9 +17,10 @@
             <h1 class="title green">
                 Create your new account
             </h1>
-            <div class="signup-container d-flex flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10">
-                <input class="form-control input" placeholder="Username" required>
-                <select class="form-control selectpicker show-tick" required title="Choose your rank :)">
+            <form class="signup-container d-flex flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10" onsubmit="return false;">
+                {% csrf_token %}
+                <input class="form-control input" id="username" placeholder="Username" required>
+                <select class="form-control selectpicker show-tick" id="rank" required title="Choose your rank :)">
                     <option>Lamer</option>
                     <option>Noob</option>
                     <option>Coder</option>
@@ -27,10 +28,58 @@
                     <option>Hacker</option>
                     <option>I hacked NASA with HTML</option>
                 </select>
-                <input type="password" class="form-control input" placeholder="Password" required>
-                <input type="password" class="form-control input" placeholder="Confirm password" required>
-                <button class="form-control btn-signup">Sign up a new account</button>
-            </div>
+                <input type="password" id="password" class="form-control input" placeholder="Password" required>
+                <input type="password" id="confirm_pwd" class="form-control input" placeholder="Confirm password" required>
+                <button type="submit" class="form-control btn-signup">Sign up a new account</button>
+            </form>
+            <div class="exception_box flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10"></div>
         </div>
+        <script>
+            var regexes = {
+                "username": String.raw({raw: "^[A-z0-9._]{3,16}$"}),
+                "password": String.raw({raw: "^[A-z0-9!@#$%^&*()_ |+=;:,.?`~{}\\-]{6,40}$"})
+            };
+            var regex_errors = {
+                "username": "Use only A-z, 0-9, . and _. Min-length: 3; Max-length: 16",
+                "password": "Use only (a–z, A–Z), space, numbers and symbols ! @ # $ % ^ & * ( ) - _ + = ; : , . / ? \ | ` ~ { }. Min-length: 6; Max-length: 40"
+            };
+            $(document).ready(function() {
+                $('#username').attr({
+                    "pattern": regexes["username"],
+                    "title": regex_errors["username"]
+                });
+                $('#password').attr({
+                    "pattern": regexes["password"],
+                    "title": regex_errors["password"]
+                });
+            });
+            function inputs_match_patterns() {
+				return ($('#username').val().match(new RegExp(regexes["username"])) &&
+						$('#password').val().match(new RegExp(regexes["password"])))
+			}
+            $('.btn-signup').click(function() {
+                $('.exception_box').removeClass('d-flex');
+                 if (inputs_match_patterns())
+                     $.ajax({
+                        type: "POST",
+                        url: 'signup',
+                        data: {
+                            'username': $('#username').val(),
+                            'rank': $('#rank').val(),
+                            'password': $('#password').val(),
+                            'confirm_pwd': $('#confirm_pwd').val(),
+                            'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),
+                        },
+                        success: function(response) {
+                         if (response['status'] == 'ok')
+                            window.location = '/';
+                         else {
+                             $('.exception_box').html(response['exception']);
+                             $('.exception_box').addClass('d-flex');
+                         }
+                        }
+                     });
+            });
+        </script>
     </body>
 </html>

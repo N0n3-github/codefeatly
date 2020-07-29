@@ -44,9 +44,14 @@ body, .container-fluid {
 	border-radius: 20px;
 	align-items: center;
 	flex-grow: 0.25;
+	min-height: 470px;
 }
 
-.input {
+.form {
+    width: 100%;
+}
+
+.input, .dropdown-toggle {
     background-color: #131619;
     border: none;
     border-radius: 7px!important;
@@ -61,10 +66,6 @@ body, .container-fluid {
     background-color: #131619;
     box-shadow: 0 0 0 .2rem rgba(77, 189, 0, 0.44);
     cursor: unset;
-}
-
-.input:nth-child(3) {
-    margin: 25px 0 25px 0;
 }
 
 /* CUSTOM SELECT */
@@ -120,8 +121,8 @@ div.form-control {
     color: #131619;
 }
 
-.dropdown.show {
-    box-shadow: 0 0 0 .2rem rgba(77, 189, 0, 0.44);
+.btn-light[aria-expanded="true"] {
+    box-shadow: 0 0 0 .2rem rgba(77, 189, 0, 0.44)!important;
 }
 
 .filter-option {
@@ -151,4 +152,17 @@ div.form-control {
     color: #ffffff;
     border: 3px solid #5556574f;
     box-shadow: none;
+}
+
+.exception_box {
+    margin-top: 30px;
+    padding: 12px;
+    min-height: 70px;
+    border-radius: 15px;
+    background-color: #f9d1d1;
+    color: #ad4842;
+    border: 2px solid #ad4842;
+    font-size: 20px;
+    align-items: center;
+    display: none;
 }

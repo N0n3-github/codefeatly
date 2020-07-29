@@ -1,0 +1,2 @@
+Install MinGW and add g++ and gcc to path variable
+Install OpenJDK

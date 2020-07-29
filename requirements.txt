@@ -1,21 +1,7 @@
-Python libs:
-psutil
-Django==2.2.6
-
-Compilers:
-g++ compiler
-gcc compiler
-For Windows users: Just install CodeBlocks with mingw and add g++  and gcc to path variable
-
-nasm comiler 
-Linux: sudo apt-get install nasm
-
-java compiler
-Linux: sudo apt-get install default-jdk
-
-Others:
-For Linux users: mono-complete
-sudo apt-get install mono-complete
-
-linux-tools for Windows
-For Windows users: Git will be enough
+asgiref==3.2.10
+Django==3.0.8
+gunicorn==20.0.4
+psutil==5.7.2
+pytz==2020.1
+sqlparse==0.3.1
+whitenoise==5.1.0
