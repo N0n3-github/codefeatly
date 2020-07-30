@@ -5,6 +5,7 @@ import threading
 import subprocess
 import os
 import re
+from sys import executable as sys_executable
 from platform import system
 
 
@@ -33,7 +34,7 @@ def process_threading_function(timeout=1):
     return outer
 
 
-def compile_file(lang, path, outputpath):
+def compile_file(lang, path, output_path):
     from shutil import copyfile, SameFileError as shutil_SameFileError
     from time import sleep as wait_for_compilng
     compile_commands = {
@@ -42,17 +43,16 @@ def compile_file(lang, path, outputpath):
         'gcc': 'gcc -o {} {}',
         'java': 'javac {}',
         'pascalabc.net': '..{0}pascal{0}pabcnetc.exe'.format(os.sep) + ' {}',
-        'nasm': 'nasm -f elf -o {} {}',
     }
     if lang in ('c++11', 'c++14', 'gcc'):
-        subprocess.call(compile_commands[lang].format(outputpath, path), shell=True)
+        subprocess.call(compile_commands[lang].format(output_path, path), shell=True)
     elif lang == 'java':
         try:
             with open(path, 'r') as file:  # reading public_class name of file
                 public_class_name = re.findall(r'public class .*', file.read())[0][13:]
         except IndexError:
             public_class_name = 'Error_public_name:::none'  # if we couldn't get public_class_name
-        try:  # trying to copy this file for the case if file names not as public_class name
+        try:  # trying to copy this file for the case if file name is not the same with public_class name
             copyfile(path, 'codes'+os.sep+public_class_name+'.java')
         except shutil_SameFileError:
             pass  # if file with that public_class name already exists ignore it
@@ -61,16 +61,11 @@ def compile_file(lang, path, outputpath):
             os.remove('codes'+os.sep+public_class_name+'.java')  # if we copied any file delete the copy
     elif lang == 'pascalabc.net':
         os.chdir('codes')
-        mono_tool = 'mono' if system() != 'Windows' else ''
-        compile_command = mono_tool + ' ' + compile_commands[lang].format(path[path.find(os.sep) + 1:])
+        mono_tool = 'mono ' if system() != 'Windows' else ''
+        compile_command = mono_tool + compile_commands[lang].format(path[path.find(os.sep) + 1:])
         devnull = open(os.devnull, 'w')
         subprocess.call(compile_command, shell=True, stdout=devnull)
         os.chdir('..')
-    elif lang == 'nasm':
-        if system() != 'Windows':
-            output = path[:-4] + '.o'
-            subprocess.call(compile_commands[lang].format(output, 'elf', path), shell=True)
-            subprocess.call('ld -m elf_i386 -o {} {}'.format(outputpath, output), shell=True)
     wait_for_compilng(2.5)
 
 
@@ -78,14 +73,10 @@ def compile_file(lang, path, outputpath):
 def return_output(lang, path, input_expr):
     run_commands = {
         'java': 'java -cp codes {}',
-        'python': 'python {}',
-        'python2': 'python2 {}',
-        'python3': 'python3 {}',
-        'php': 'php -f {}',
+        'python3': sys_executable + ' {}',
         'c++11': '{}',
         'c++14': '{}',
         'gcc': '{}',
-        'nasm': '{}',
         'pascalabc.net': '{}',
     }
     command = 'echo ' + input_expr + ' | ' + run_commands[lang].format(path)
@@ -98,7 +89,7 @@ def return_output(lang, path, input_expr):
 def delete_compiled_files():
     output = os.listdir('codes')
     for fname in output:
-        if fname[-fname[::-1].find('.') - 1:] not in ('.asm', '.c', '.cpp', '.java', '.pas', '.py', '.php'):
+        if fname[-fname[::-1].find('.') - 1:] not in ('.c', '.cpp', '.java', '.pas', '.py'):
             os.remove('codes{}'.format(os.sep + fname))
 
 
@@ -111,20 +102,18 @@ if __name__ == '__main__':
         r'codes/main.cpp',
         r'codes/hello_world.java',
         r'codes/hello_world.pas',
-        r'codes/print_input.asm',
     ]  # make only one path as sys.argv[2]
     # TEMP CONFIGS
-    compiling_langs = 'pascalabc.net', 'c++11', 'c++14', 'gcc', 'nasm', 'java'
+    compiling_langs = 'pascalabc.net', 'c++11', 'c++14', 'gcc', 'java'
     compile_extensions = {
         'java': '.class',
         'c++11': '.exe',
         'c++14': '.exe',
         'gcc': '.exe',
         'pascalabc.net': '.exe',
-        'nasm': '.exe',
     }
-    sys_argv_path = paths[2].replace('/', os.sep).replace('\\', os.sep)  # write sys.argv[2] instead pf paths[2] instead
-    sys_argv_lang = 'java'  # write sys.argv[<index of language>] here instead
+    sys_argv_path = paths[0].replace('/', os.sep).replace('\\', os.sep)  # write sys.argv[2] instead pf paths[2] instead
+    sys_argv_lang = 'python3'  # write sys.argv[<index of language>] here instead
     # COMPILE FILE
     if sys_argv_lang in compiling_langs:
         opt_path = sys_argv_path[:-sys_argv_path[::-1].find('.') - 1] + compile_extensions[sys_argv_lang]
@@ -135,10 +124,11 @@ if __name__ == '__main__':
             sys_argv_path = opt_path
     # COMPILE FILE
 
-    # TODO: All exit types as (CE; RE; TLE; ME; WA; OK;) and make json response, sys.argv
-    # TODO: MySQL bind
+    # TODO: All exit types as (CE; RE; TLE; ME; WA; OK;) and make json response, sys.argv in <return_output>
+    # TODO: Database bind
     # TODO: Do something with errors
-    # TODO: Test that all
+    # TODO: Refactor compiler
+    # TODO: Testing
     for i in range(len(prog_input)):
-        print(sys_argv_lang.upper()+':', return_output(sys_argv_lang, sys_argv_path, prog_input[i]))
+        print(return_output(sys_argv_lang, sys_argv_path, prog_input[i]))
     delete_compiled_files()

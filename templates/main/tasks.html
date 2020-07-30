@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block includes %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main/tasks.css' %}">
+{% endblock %}
+
+{%block content %}
+    {% if user.is_authenticated %}
+        <div class="temp_wrapper d-flex flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10">
+            <h1 class="title green">Authenticated</h1>
+            <a class="btn btn-codefeatly" href="{% url 'logout' %}">Log out</a>
+        </div>
+    {% else %}
+        <h1 class="title green">Authenticate first</h1>
+        <div class="title green emoji">╰(◉ᾥ◉)╯</div>
+    {% endif %}
+    <script type="text/javascript">
+        var next_pos = {"top": window.innerHeight / 2 - $('.emoji').height() / 2,
+                        "left": window.innerWidth - $('.emoji').width(),
+                        "pos_num": 1,
+                       };
+        function animate() {
+            $('.emoji').animate({
+                rotate: '+=360deg',
+                top: next_pos['top'].toString(),
+                left: next_pos['left'].toString(),
+            }, 3000, function() {
+                switch (next_pos["pos_num"]) {
+                    case 0:
+                        next_pos["top"] = window.innerHeight / 2 - $('.emoji').height() / 2;
+                        next_pos["left"] = window.innerWidth - $('.emoji').width();
+                        next_pos["pos_num"] ++;
+                        break;
+                    case 1:
+                        next_pos["top"] = window.innerHeight - $('.emoji').height();
+                        next_pos["left"] = window.innerWidth / 2 - $('.emoji').width() / 2;
+                        next_pos["pos_num"] ++;
+                        break;
+                    case 2:
+                        next_pos["top"] = window.innerHeight / 2 - $('.emoji').height() / 2;
+                        next_pos["left"] = 0;
+                        next_pos["pos_num"] ++;
+                        break;
+                    case 3:
+                        next_pos["top"] = 0;
+                        next_pos["left"] = window.innerWidth / 2 - $('.emoji').width() / 2;
+                        next_pos["pos_num"] = 0;
+                        break;
+                }
+            });
+        }
+        animate();
+        setInterval(animate, 3200);
+    </script>
+{% endblock %}

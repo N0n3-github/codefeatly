@@ -1,6 +1,6 @@
-from django.shortcuts import render
-from django.contrib.auth.models import User as BaseUser, auth
-from .models import User
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User, auth
+from .models import Profile
 from django.http import JsonResponse
 from re import match as re_match
 
@@ -38,7 +38,7 @@ def signup(request):
                         'Programmer',
                         'Hacker',
                         'I hacked NASA with HTML']
-        if BaseUser.objects.filter(username=username).exists():
+        if User.objects.filter(username=username).exists():
             response['exception'] = "This username is already taken"
         elif password != confirm_pwd:
             response['exception'] = "Passwords don't match"
@@ -51,9 +51,18 @@ def signup(request):
         if response.get('exception'):
             response['status'] = 'error'
         else:
-            base_user = BaseUser.objects.create_user(username=username, password=password)
-            user = User(user=base_user, rank=rank)
-            user.save()
+            base_user = User.objects.create_user(username=username, password=password)
+            profile = Profile(user=base_user, rank=rank)
+            profile.save()
             response['status'] = 'ok'
         return JsonResponse(response)
     return render(request, 'main/signup.html')
+
+
+def tasks(request):
+    return render(request, 'main/tasks.html')
+
+
+def logout(request):
+    auth.logout(request)
+    return redirect('index')

@@ -1,0 +1,12 @@
+body, .container-fluid {
+    overflow: hidden;
+}
+
+.emoji {
+    position: absolute;
+    top: 0;
+}
+
+.temp_wrapper {
+    align-items: center;
+}
