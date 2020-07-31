@@ -6,6 +6,8 @@ from re import match as re_match
 
 
 def index(request):
+    if request.user.is_authenticated:
+        return redirect('tasks')
     if request.method == "POST":
         response = {}
         username = request.POST.get('username')

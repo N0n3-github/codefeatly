@@ -1,3 +1,7 @@
+.container-fluid, .content {
+    align-items: center;
+}
+
 .signup-container {
     padding: 20px;
 	background-color: #5556574f;

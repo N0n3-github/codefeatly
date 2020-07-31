@@ -1,12 +1,15 @@
 body, .container-fluid {
     margin: 0;
     padding: 0;
-    background: #131619;
+    background-color: #131619;
     min-height: 100vh;
 }
 
-.container-fluid, .content {
-    align-items: center;
+.content {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    flex: 1 0 auto;
 }
 
 .title {
@@ -70,6 +73,9 @@ body, .container-fluid {
     border: 3px solid #5556574f!important;
     transition: 0.8s ease;
     border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
 }
 

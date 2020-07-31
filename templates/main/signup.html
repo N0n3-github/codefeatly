@@ -6,25 +6,27 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="title green">
-        Create your new account
-    </h1>
-    <form class="signup-container d-flex flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10" onsubmit="return false;">
-        {% csrf_token %}
-        <input class="form-control input" id="username" placeholder="Username" required>
-        <select class="form-control selectpicker show-tick" id="rank" required title="Choose your rank :)">
-            <option>Lamer</option>
-            <option>Noob</option>
-            <option>Coder</option>
-            <option>Programmer</option>
-            <option>Hacker</option>
-            <option>I hacked NASA with HTML</option>
-        </select>
-        <input type="password" id="password" class="form-control input" placeholder="Password" required>
-        <input type="password" id="confirm_pwd" class="form-control input" placeholder="Confirm password" required>
-        <button id="btn_signup" class="form-control btn-codefeatly">Sign up a new account</button>
-    </form>
-    <div class="exception_box flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10"></div>
+    <div class="content d-flex flex-column justify-content-center">
+        <h1 class="title green">
+            Create your new account
+        </h1>
+        <form class="signup-container d-flex flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10" onsubmit="return false;">
+            {% csrf_token %}
+            <input class="form-control input" id="username" placeholder="Username" required>
+            <select class="form-control selectpicker show-tick" id="rank" required title="Choose your rank :)">
+                <option>Lamer</option>
+                <option>Noob</option>
+                <option>Coder</option>
+                <option>Programmer</option>
+                <option>Hacker</option>
+                <option>I hacked NASA with HTML</option>
+            </select>
+            <input type="password" id="password" class="form-control input" placeholder="Password" required>
+            <input type="password" id="confirm_pwd" class="form-control input" placeholder="Confirm password" required>
+            <button id="btn_signup" class="form-control btn-codefeatly">Sign up a new account</button>
+        </form>
+        <div class="exception_box flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10"></div>
+    </div>
     <script type="text/javascript">
         var regexes = {
             "username": String.raw({raw: "^[A-z0-9._]{3,16}$"}),

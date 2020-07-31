@@ -1,6 +1,5 @@
-.content {
-    width: 100%;
-    flex: 1 0 auto;
+.container-fluid, .content {
+    align-items: center;
 }
 
 .login-container {
