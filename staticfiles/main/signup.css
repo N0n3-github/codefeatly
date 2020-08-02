@@ -1,0 +1,12 @@
+.container-fluid, .content {
+    align-items: center;
+}
+
+.signup-container {
+    padding: 20px;
+	background-color: #5556574f;
+	border-radius: 20px;
+	align-items: center;
+	flex-grow: 0.25;
+	min-height: 470px;
+}
