@@ -81,11 +81,18 @@ body, .container-fluid {
 
 .btn-codefeatly:hover,
 .btn-codefeatly:focus {
-    width: 100%;
     background-color: rgba(77, 189, 0, 0.7);
     color: #ffffff;
     border: 3px solid #5556574f;
     box-shadow: none;
+}
+
+.btn-expanding:hover,
+.btn-expanding:focus {
+    width: 100%;
+    background-color: rgba(77, 189, 0, 0.7);
+    color: #ffffff;
+    border: 3px solid #5556574f;
 }
 
 a {

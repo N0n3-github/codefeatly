@@ -5,12 +5,12 @@
         {% load static %}
         <meta name="viewport" content="width=480, maximum-scale=1.0, user-scalable=no">
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static 'bootstrap_select/bootstrap-select.css' %}">
-        <link rel="stylesheet" href="{% static 'base.css' %}">
-        <script src="{% static 'jquery/jquery-3.4.1.js' %}"></script>
-        <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-        <script src="{% static 'bootstrap_select/bootstrap-select.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'base/bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'base/bootstrap_select/bootstrap-select.css' %}">
+        <link rel="stylesheet" href="{% static 'base/base.css' %}">
+        <script src="{% static 'base/jquery/jquery-3.4.1.js' %}"></script>
+        <script src="{% static 'base/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'base/bootstrap_select/bootstrap-select.js' %}"></script>
         {% block includes %}{% endblock %}
         <title>{% block title %}Codefeatly{% endblock %}</title>
     {% endblock %}

@@ -23,7 +23,7 @@
             </select>
             <input type="password" id="password" class="form-control input" placeholder="Password" required>
             <input type="password" id="confirm_pwd" class="form-control input" placeholder="Confirm password" required>
-            <button id="btn_signup" class="form-control btn-codefeatly">Sign up a new account</button>
+            <button id="btn_signup" class="form-control btn-codefeatly btn-expanding">Sign up a new account</button>
         </form>
         <div class="exception_box flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10"></div>
     </div>
@@ -55,7 +55,7 @@
              if (inputs_match_patterns())
                  $.ajax({
                     type: "POST",
-                    url: 'signup',
+                    url: '{% url "main:signup" %}',
                     data: {
                         'username': $('#username').val(),
                         'rank': $('#rank').val(),
@@ -64,12 +64,13 @@
                         'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),
                     },
                     success: function(response) {
-                     if (response['status'] == 'ok')
-                        window.location = "{% url 'index' %}";
-                     else {
-                         $('.exception_box').html(response['exception']);
-                         $('.exception_box').addClass('d-flex');
-                     }
+                        console.log(response);
+                        if (response['status'] == 'ok')
+                           window.location = "{% url 'main:index' %}";
+                        else {
+                            $('.exception_box').html(response['exception']);
+                            $('.exception_box').addClass('d-flex');
+                        }
                     }
                  });
         });

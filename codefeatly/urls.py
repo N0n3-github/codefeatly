@@ -18,5 +18,10 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('main.urls')),
+    path('adminpanel/', include('adminpanel.urls', namespace="adminpanel")),
+    path('', include('main.urls', namespace="main")),
 ]
+
+admin.site.site_header = "Codefeatly"
+admin.site.site_title = "Administration"
+admin.site.index_title = "Welcome to Codefeatly"

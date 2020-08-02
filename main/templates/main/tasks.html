@@ -9,28 +9,66 @@
     {% if user.is_authenticated %}
         <div class="content d-flex flex-column col-12">
             <div class="header d-flex justify-content-center col-12">
-                <div id="timer" class="timer green"></div>
-                <a class="btn btn-codefeatly logout_btn" href="{% url 'logout' %}">Log out</a>
+                <div id="timer" class="timer green">03:00:00</div>
+                <a class="btn btn-codefeatly logout_btn" href="{% url 'main:logout' %}">Log out</a>
             </div>
             <div class="main-container d-flex col-12 flex-grow-1">
-                <div class="tasks-container d-flex flex-column">
-                    <button class="btn btn-codefeatly">Task 1</button>
-                    <button class="btn btn-codefeatly">Task 2</button>
-                    <button class="btn btn-codefeatly">Task 3</button>
-                    <button class="btn btn-codefeatly">Task 4</button>
-                    <button class="btn btn-codefeatly">Task 5</button>
-                    <button class="btn btn-codefeatly">Task 1</button>
-                    <button class="btn btn-codefeatly">Task 2</button>
-                </div>
                 <div class="task d-flex flex-column"></div>
-                <div class="submit-container d-flex flex-column"></div>
+                <div class="sidebar d-flex flex-column">
+                    <div class="tasks-container d-flex flex-column">
+                        <button class="btn btn-codefeatly">Task 1</button>
+                        <button class="btn btn-codefeatly">Task 2</button>
+                        <button class="btn btn-codefeatly">Task 3</button>
+                        <button class="btn btn-codefeatly">Task 4</button>
+                        <button class="btn btn-codefeatly">Task 5</button>
+                    </div>
+                    <div class="hr"></div>
+                    <div class="submit-container d-flex flex-column">
+                        <h3 class="green">Submit solution</h3>
+                        <form class="submit-form d-flex flex-column" onsubmit="return false;">
+                            {% csrf_token %}
+                            <select class="form-control selectpicker show-tick" id="task_id" required title="Choose task">
+                                <option>Task 1</option>
+                                <option>Task 2</option>
+                                <option>Task 3</option>
+                                <option>Task 4</option>
+                                <option>Task 5</option>
+                            </select>
+                            <select class="form-control selectpicker show-tick" id="lang" required title="Choose language">
+                                <option>C</option>
+                                <option>C++</option>
+                                <option>Python3</option>
+                                <option>PascalABC.NET</option>
+                                <option>Java</option>
+                            </select>
+                            <button class="btn btn-codefeatly btn-expanding submit-btn">Submit</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
+        <script type="text/javascript">
+            function getTimeLeft() {
+                $.ajax({
+                    type: "POST",
+                    url: '{% url 'main:tasks' %}',
+                    data: {
+                        'getTimer': true,
+                        'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),
+                    },
+                    success: function(response) {
+                        if (response['text'])
+                           alert(response['text']);
+                    }
+                });
+            }
+            getTimeLeft();
+        </script>
     {% else %}
         <div class="auth-content d-flex flex-column justify-content-center">
             <div class="auth-container d-flex flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10">
                 <h1 class="title green">Authenticate first</h1>
-                <a class="btn btn-codefeatly" href="{% url 'index' %}">Back to index page</a>
+                <a class="btn btn-codefeatly" href="{% url 'main:index' %}">Back to index page</a>
             </div>
             <div class="title green emoji">╰(◉ᾥ◉)╯</div>
         </div>

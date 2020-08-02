@@ -7,7 +7,10 @@ from re import match as re_match
 
 def index(request):
     if request.user.is_authenticated:
-        return redirect('tasks')
+        if request.user.is_superuser:
+            return redirect('adminpanel:manager')
+        else:
+            return redirect('main:tasks')
     if request.method == "POST":
         response = {}
         username = request.POST.get('username')
@@ -16,6 +19,7 @@ def index(request):
         if user is not None:
             auth.login(request, user)
             response['status'] = 'ok'
+            response['profile_type'] = 'admin' if user.is_superuser else 'user'
         else:
             response['status'] = 'error'
             response['exception'] = "Username or password is incorrect"
@@ -62,9 +66,14 @@ def signup(request):
 
 
 def tasks(request):
+    if request.user.is_superuser:
+        return redirect("adminpanel:manager")
+    if request.method == "POST":
+        if request.POST.get("getTimer"):
+            return JsonResponse({'text':'asdfasdf'})
     return render(request, 'main/tasks.html')
 
 
 def logout(request):
     auth.logout(request)
-    return redirect('index')
+    return redirect('main:index')

@@ -3,13 +3,16 @@
 {% block includes %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'main/style.css' %}">
-    <script src="{% static 'fontawesome/fontawesome_all.js' %}"></script>
+    <script src="{% static 'base/fontawesome/fontawesome_all.js' %}"></script>
 {% endblock %}
 
 {% block content %}
     <div class="content d-flex flex-column justify-content-center">
         <h1 class="title">
-            root@<font class="green">codefeatly</font>:[/]# <font class="cursor green">█</font>
+            <font class="bash_user">user</font>@<!--
+         --><font class="green">codefeatly</font>:[<!--
+         --><font class="bash_path">~</font>]<font class="bash_symb">$</font><!--
+         --><font class="cursor green"> █</font>
         </h1>
         <form class="login-container d-flex flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10" onsubmit="return false;">
             {% csrf_token %}
@@ -22,8 +25,8 @@
                     </font>
                 </span>
             </div>
-            <button id="btn_login" class="form-control btn-codefeatly">Log in</button>
-            <p class="signup-text">Don't have account yet? <a href="{% url 'signup' %}">Sign up</a></p>
+            <button id="btn_login" class="form-control btn-codefeatly btn-expanding">Log in</button>
+            <p class="signup-text">Don't have account yet? <a href="{% url 'main:signup' %}">Sign up</a></p>
         </form>
         <div class="exception_box flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10"></div>
     </div>
@@ -65,10 +68,56 @@
                     $('.fa-eye').removeClass('fa-eye').addClass('fa-eye-slash');
                 }
             });
+
+            function AnimateAndLogin(profile_type) {
+                var redirect_link = '{% url "main:tasks" %}';
+                var bash_info = {"bash_user":"user", "bash_path":"~", "bash_symb": "$"};
+                if (profile_type == 'admin') {
+                    bash_info = {"bash_user":"root", "bash_path":"/", "bash_symb": "#"};
+                    redirect_link = '{% url "adminpanel:manager" %}';
+                }
+                $('.bash_user').html(bash_info["bash_user"]);
+                $('.bash_user').addClass('green');
+                $('.bash_path').animate({
+                    opacity: 0,
+                }, 200, function() {
+                    $('.bash_path').addClass('green');
+                    $('.bash_path').text(bash_info["bash_path"]).animate({
+                        opacity: 1,
+                    }, 200);
+                });
+                $('.bash_symb').animate({
+                    opacity: 0,
+                }, 200, function() {
+                    $('.bash_symb').addClass('green');
+                    $('.bash_symb').text(bash_info["bash_symb"]).animate({
+                        opacity: 1,
+                    }, 200);
+                });
+                $('.bash_user').animate({
+                    opacity: 0,
+                }, 300, function() {
+                    $('.bash_user').animate({
+                    opacity: 1,
+                    }, 300, function() {
+                        $('.bash_user').animate({
+                            opacity: 0,
+                        }, 300, function() {
+                            $('.bash_user').animate({
+                            opacity: 1,
+                            }, 300, function() {
+                                window.location = redirect_link;
+                            });
+                        });
+                    });
+                });
+            }
+
             $('#btn_login').click(function() {
+                $('.exception_box').removeClass('d-flex');
                 $.ajax({
                     type: "POST",
-                    url: '/',
+                    url: '{% url "main:index" %}',
                     data: {
                         'username': $('#username').val(),
                         'password': $('#password').val(),
@@ -76,7 +125,7 @@
                     },
                     success: function(response) {
                      if (response['status'] == 'ok')
-                        window.location = "{% url 'tasks' %}";
+                         AnimateAndLogin(response['profile_type']);
                      else {
                          $('.exception_box').html(response['exception']);
                          $('.exception_box').addClass('d-flex');
