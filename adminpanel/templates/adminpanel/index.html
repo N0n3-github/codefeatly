@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block includes %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'adminpanel/style.css' %}">
+    <script src="{% static 'fontawesome/fontawesome_all.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="content d-flex flex-column justify-content-center">
+        <h1 class="title">
+            root@<font class="green">codefeatly</font>:[/]# <font class="cursor green">█</font>
+        </h1>
+        <form class="login-container d-flex flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10" onsubmit="return false;">
+            {% csrf_token %}
+            <input id="username" class="form-control input" placeholder="Username">
+            <input id="password" type="password" class="form-control input" placeholder="Password">
+            <button id="btn_login" class="form-control btn-codefeatly btn-expanding">Log in</button>
+        </form>
+        <div class="exception_box flex-column justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-10"></div>
+    </div>
+    <div class="quote_container d-flex justify-content-center col-xl-5 col-lg-6 col-md-7 col-sm-9 col-9">
+        <p class="quote"></p>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            setInterval(function() {
+                if ($('.cursor').hasClass('transparent'))
+                    $('.cursor').removeClass('transparent');
+                else
+                    $('.cursor').addClass('transparent');
+            }, 600);
+            $('#btn_login').click(function() {
+                $('.exception_box').removeClass('d-flex');
+                $.ajax({
+                    type: "POST",
+                    url: '{% url "adminpanel:index" %}',
+                    data: {
+                        'username': $('#username').val(),
+                        'password': $('#password').val(),
+                        'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        if (response['status'] == 'ok')
+                           window.location = "{% url 'adminpanel:manager' %}";
+                        else {
+                            $('.exception_box').html(response['exception']);
+                            $('.exception_box').addClass('d-flex');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
