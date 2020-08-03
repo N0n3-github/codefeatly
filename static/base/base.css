@@ -117,23 +117,17 @@ a:hover {
 }
 
 /* CUSTOM SELECT */
-div.form-control {
+.bootstrap-select {
     background-color: unset;
 }
 
-.dropdown-toggle,
+.bootstrap-select .dropdown-toggle,
 .bootstrap-select > .dropdown-toggle.bs-placeholder,
 .bootstrap-select > .dropdown-toggle.bs-placeholder:hover,
 .bootstrap-select > .dropdown-toggle.bs-placeholder:focus,
-.bootstrap-select > .dropdown-toggle.bs-placeholder:active
-.btn-light:not(:disabled):not(.disabled).active:focus,
-.btn-light:not(:disabled):not(.disabled):active:focus,
-.show > .btn-light.dropdown-toggle:focus,
-.btn-light:hover, .btn-light:focus,
-.btn-light:focus:hover,
-.btn-light:not(:disabled):not(.disabled).active,
-.btn-light:not(:disabled):not(.disabled):active,
-.show > .btn-light.dropdown-toggle {
+.bootstrap-select > .dropdown-toggle.bs-placeholder:active,
+.bootstrap-select .show > .btn-light.dropdown-toggle:focus,
+.bootstrap-select .show > .btn-light.dropdown-toggle {
     height: 55px;
     font-size: 20px;
     background-color: #131619!important;
@@ -144,37 +138,108 @@ div.form-control {
     letter-spacing: 0.7px!important;
 }
 
-.btn-light, .btn-light:hover {
+.bootstrap-select .btn-light {
     color: rgba(77, 189, 0, 0.7)!important;
 }
 
-.dropdown-menu {
+.bootstrap-select .btn-light:not(:disabled):not(.disabled):active,
+.bootstrap-select .btn-light:not(:disabled):not(.disabled):focus,
+.bootstrap-select .btn-light:not(:disabled):not(.disabled):active:focus{
+    color: #6c757d!important;
+}
+
+.bootstrap-select .dropdown-menu {
     background-color: #131619!important;
 }
 
-.dropdown-item {
+.bootstrap-select .dropdown-item {
     background-color: #131619!important;
     color: #6c757d!important;
     font-size: 20px;
     letter-spacing: 0.7px;
 }
 
-.dropdown-item:hover {
+.bootstrap-select .dropdown-item:hover {
     background-color: #4dbd00!important;
     color: #131619!important;
 }
 
-.dropdown-item.active, .dropdown-item:active {
+.bootstrap-select .dropdown-item.active, .dropdown-item:active {
     background-color: #4dbd00!important;
     color: #131619!important;
 }
 
-.btn-light[aria-expanded="true"] {
+.bootstrap-select .btn-light[aria-expanded="true"] {
     box-shadow: 0 0 0 .2rem rgba(77, 189, 0, 0.44)!important;
 }
 
-.filter-option {
+.bootstrap-select .filter-option {
     display: flex!important;
     align-items: center!important;
 }
 /* CUSTOM SELECT */
+
+/*CUSTOM CALENDAR*/
+.bootstrap-datetimepicker-widget {
+    background-color: #131619!important;
+    border-radius: 10px;
+}
+
+.bootstrap-datetimepicker-widget table {
+    color: #fff;
+}
+
+.bootstrap-datetimepicker-widget table td.active,
+.bootstrap-datetimepicker-widget table td.active:hover {
+    background-color: #4dbd00!important;
+}
+
+.bootstrap-datetimepicker-widget table td.today::before {
+    border-bottom-color: #4dbd00;
+}
+
+.bootstrap-datetimepicker-widget table td.day:hover,
+.bootstrap-datetimepicker-widget table td.hour:hover,
+.bootstrap-datetimepicker-widget table td.minute:hover,
+.bootstrap-datetimepicker-widget table td.second:hover {
+    background-color: #272a2c;
+}
+
+.bootstrap-datetimepicker-widget table thead tr:first-child th:hover {
+    background-color: #272a2c;
+}
+
+.bootstrap-datetimepicker-widget table thead th {
+    border-bottom: 2px solid #aeaeae;
+}
+
+.bootstrap-datetimepicker-widget table td, .table th {
+    border-top: none;
+}
+
+.bootstrap-datetimepicker-widget table td.old,
+.bootstrap-datetimepicker-widget table td.new {
+    color: #393939;
+}
+
+.bootstrap-datetimepicker-widget table td span:hover {
+    background-color: #272a2c;
+}
+
+.bootstrap-datetimepicker-widget table td span.active {
+    background-color: #4dbd00;
+}
+
+.bootstrap-datetimepicker-widget a[data-action] {
+    border-radius: 7px;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bootstrap-datetimepicker-widget a[data-action]:hover {
+    background-color: #272a2c;
+}
+/*CUSTOM CALENDAR*/

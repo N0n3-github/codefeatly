@@ -70,7 +70,7 @@ def tasks(request):
         return redirect("adminpanel:manager")
     if request.method == "POST":
         if request.POST.get("getTimer"):
-            return JsonResponse({'text':'asdfasdf'})
+            return JsonResponse({'text':'ExampleTimerText'})
     return render(request, 'main/tasks.html')
 
 

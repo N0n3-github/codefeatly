@@ -11,7 +11,9 @@
 	flex-grow: 0.25;
 }
 
-.show_hide_pwd_btn {
+.show_hide_pwd_btn,
+.show_hide_pwd_btn:hover,
+.show_hide_pwd_btn:focus {
     position: absolute;
     cursor: pointer;
     margin: 0;
@@ -25,14 +27,6 @@
     border-radius: 0 7px 7px 0;
     align-items: center;
     z-index: 3;
-}
-
-.show_hide_pwd_btn:hover {
-    color: #4dbd00;
-}
-
-.show_hide_pwd_btn:focus {
-    box-shadow: none;
 }
 
 p {
