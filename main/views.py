@@ -5,6 +5,15 @@ from django.http import JsonResponse
 from re import match as re_match
 
 
+def login_required(func):
+    def wrapper(request):
+        if not request.user.is_authenticated:
+            json_res = JsonResponse({'status': 'error', 'exception': 'AuthenticateError'})
+            return json_res if request.is_ajax() else redirect('main:error401')
+        return func(request)
+    return wrapper
+
+
 def index(request):
     if request.user.is_authenticated:
         if request.user.is_superuser:
@@ -19,7 +28,11 @@ def index(request):
         if user is not None:
             auth.login(request, user)
             response['status'] = 'ok'
-            response['profile_type'] = 'admin' if user.is_superuser else 'user'
+            response['profile_type'] = 'user'
+            request.session.set_expiry(259200)  # 3 days
+            if user.is_superuser:
+                response['profile_type'] = 'admin'
+                request.session.set_expiry(1800)  # 30 minutes
         else:
             response['status'] = 'error'
             response['exception'] = "Username or password is incorrect"
@@ -65,15 +78,20 @@ def signup(request):
     return render(request, 'main/signup.html')
 
 
+@login_required
 def tasks(request):
     if request.user.is_superuser:
         return redirect("adminpanel:manager")
     if request.method == "POST":
         if request.POST.get("getTimer"):
-            return JsonResponse({'text':'ExampleTimerText'})
+            return JsonResponse({'text': 'ExampleTimerText'})
     return render(request, 'main/tasks.html')
 
 
 def logout(request):
     auth.logout(request)
     return redirect('main:index')
+
+
+def errors_401(request):
+    return render(request, 'errors/401.html')

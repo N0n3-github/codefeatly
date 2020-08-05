@@ -61,7 +61,7 @@
                         'rank': $('#rank').val(),
                         'password': $('#password').val(),
                         'confirm_pwd': $('#confirm_pwd').val(),
-                        'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
                     },
                     success: function(response) {
                         console.log(response);

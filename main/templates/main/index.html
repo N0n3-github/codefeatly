@@ -121,7 +121,7 @@
                     data: {
                         'username': $('#username').val(),
                         'password': $('#password').val(),
-                        'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
                     },
                     success: function(response) {
                      if (response['status'] == 'ok')
